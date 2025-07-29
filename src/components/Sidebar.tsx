@@ -13,7 +13,14 @@ import {
   TrendingUp,
   BarChart3,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  Building2,
+  Wrench,
+  Calendar,
+  LogOut,
+  Phone,
+  Menu,
+  X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,14 +28,23 @@ interface MenuItem {
   title: string;
   icon: React.ComponentType<any>;
   badge?: string;
-  subItems?: { title: string; href?: string }[];
+  subItems?: { title: string; href?: string; onClick?: () => void }[];
 }
 
 const menuItems: MenuItem[] = [
   {
-    title: "HSN Master",
-    icon: Package,
+    title: "Company",
+    icon: Building2,
     subItems: [
+      { title: "Company Profile" },
+      { title: "Company Profile Register" }
+    ]
+  },
+  {
+    title: "Masters",
+    icon: Users,
+    subItems: [
+      { title: "HSN Master" },
       { title: "Currency" },
       { title: "EPCG License" },
       { title: "Exchange Rate" },
@@ -43,21 +59,14 @@ const menuItems: MenuItem[] = [
     ]
   },
   {
-    title: "Masters",
-    icon: Users,
-    badge: "12",
+    title: "Sales",
+    icon: TrendingUp,
     subItems: [
       { title: "Performa Invoice" },
       { title: "Production Order" },
       { title: "Packing List" },
       { title: "Commercial Invoice" },
-      { title: "Post Shipment" }
-    ]
-  },
-  {
-    title: "Sales",
-    icon: TrendingUp,
-    subItems: [
+      { title: "Post Shipment" },
       { title: "Sales Form" },
       { title: "Sales Sub Form" },
       { title: "Apply Tax" },
@@ -88,7 +97,7 @@ const menuItems: MenuItem[] = [
   },
   {
     title: "Utilities",
-    icon: BarChart3,
+    icon: Wrench,
     subItems: [
       { title: "Admin Report" },
       { title: "Update Salesman" },
@@ -99,11 +108,28 @@ const menuItems: MenuItem[] = [
       { title: "Rebuild Index" },
       { title: "Document Series" }
     ]
+  },
+  {
+    title: "Financial Year",
+    icon: Calendar
+  },
+  {
+    title: "Exit",
+    icon: LogOut
+  },
+  {
+    title: "Contact Us",
+    icon: Phone
   }
 ];
 
-export const Sidebar = () => {
+interface SidebarProps {
+  onFormSelect: (formType: string) => void;
+}
+
+export const Sidebar = ({ onFormSelect }: SidebarProps) => {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleExpanded = (title: string) => {
     setExpandedItems(prev => 
@@ -113,17 +139,36 @@ export const Sidebar = () => {
     );
   };
 
+  const toggleCollapsed = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   return (
-    <Card className="w-80 h-full bg-card border-r shadow-soft">
+    <Card className={cn(
+      "h-full bg-card border-r shadow-soft transition-all duration-300",
+      isCollapsed ? "w-16" : "w-80"
+    )}>
       <div className="p-6 border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-primary rounded-lg">
-            <Factory className="h-6 w-6 text-white" />
+        <div className="flex items-center justify-between">
+          <div className={cn("flex items-center gap-3", isCollapsed && "justify-center")}>
+            <div className="p-2 bg-gradient-primary rounded-lg">
+              <Factory className="h-6 w-6 text-white" />
+            </div>
+            {!isCollapsed && (
+              <div>
+                <h2 className="font-bold text-xl text-foreground">SBS India</h2>
+                <p className="text-sm text-muted-foreground">Business Management</p>
+              </div>
+            )}
           </div>
-          <div>
-            <h2 className="font-bold text-xl text-foreground">SBS India</h2>
-            <p className="text-sm text-muted-foreground">Business Management</p>
-          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleCollapsed}
+            className="h-8 w-8 p-0"
+          >
+            {isCollapsed ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
+          </Button>
         </div>
       </div>
 
@@ -137,29 +182,34 @@ export const Sidebar = () => {
               <Button
                 variant="ghost"
                 className={cn(
-                  "w-full justify-start h-12 px-4 text-left",
-                  "hover:bg-primary/10 hover:text-primary transition-all duration-200",
-                  isExpanded && "bg-primary/5 text-primary"
+                  "w-full h-12 px-4 text-left transition-all duration-200",
+                  "hover:bg-primary/10 hover:text-primary",
+                  isExpanded && "bg-primary/5 text-primary",
+                  isCollapsed ? "justify-center" : "justify-start"
                 )}
-                onClick={() => toggleExpanded(item.title)}
+                onClick={() => item.subItems ? toggleExpanded(item.title) : undefined}
               >
-                <Icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                <span className="flex-1 font-medium">{item.title}</span>
-                {item.badge && (
-                  <Badge variant="secondary" className="mr-2 text-xs">
-                    {item.badge}
-                  </Badge>
-                )}
-                {item.subItems && (
-                  isExpanded ? (
-                    <ChevronDown className="h-4 w-4 flex-shrink-0" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4 flex-shrink-0" />
-                  )
+                <Icon className={cn("h-5 w-5 flex-shrink-0", !isCollapsed && "mr-3")} />
+                {!isCollapsed && (
+                  <>
+                    <span className="flex-1 font-medium">{item.title}</span>
+                    {item.badge && (
+                      <Badge variant="secondary" className="mr-2 text-xs">
+                        {item.badge}
+                      </Badge>
+                    )}
+                    {item.subItems && (
+                      isExpanded ? (
+                        <ChevronDown className="h-4 w-4 flex-shrink-0" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4 flex-shrink-0" />
+                      )
+                    )}
+                  </>
                 )}
               </Button>
               
-              {isExpanded && item.subItems && (
+              {!isCollapsed && isExpanded && item.subItems && (
                 <div className="ml-6 space-y-1 animate-slide-up">
                   {item.subItems.map((subItem) => (
                     <Button
@@ -167,6 +217,12 @@ export const Sidebar = () => {
                       variant="ghost"
                       size="sm"
                       className="w-full justify-start h-9 px-4 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                      onClick={() => {
+                        if (subItem.title === "HSN Master" || subItem.title === "Currency" || 
+                            subItem.title === "Company Profile" || subItem.title === "Company Profile Register") {
+                          onFormSelect(subItem.title);
+                        }
+                      }}
                     >
                       <div className="w-2 h-2 rounded-full bg-muted-foreground/30 mr-3 flex-shrink-0" />
                       {subItem.title}

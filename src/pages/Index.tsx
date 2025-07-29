@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { Sidebar } from "@/components/Sidebar";
-import { Navbar } from "@/components/Navbar";
 import { ModuleCard } from "@/components/ModuleCard";
 import { StatsCard } from "@/components/StatsCard";
 import { HSNMasterForm } from "@/components/forms/HSNMasterForm";
 import { CurrencyForm } from "@/components/forms/CurrencyForm";
+import { CompanyProfileForm } from "@/components/forms/CompanyProfileForm";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -140,10 +140,9 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader />
-      <Navbar onFormSelect={handleFormSelect} />
       
       <div className="flex">
-        <Sidebar />
+        <Sidebar onFormSelect={handleFormSelect} />
         
         <main className="flex-1 p-8 space-y-8 animate-fade-in">
           {/* Stats Overview */}
@@ -236,6 +235,9 @@ const Index = () => {
       )}
       {activeForm === "Currency" && (
         <CurrencyForm onClose={handleCloseForm} />
+      )}
+      {(activeForm === "Company Profile" || activeForm === "Company Profile Register") && (
+        <CompanyProfileForm onClose={handleCloseForm} />
       )}
     </div>
   );
