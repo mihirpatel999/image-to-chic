@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { DashboardHeader } from "@/components/DashboardHeader";
 import { Sidebar } from "@/components/Sidebar";
+import { Navbar } from "@/components/Navbar";
 import { ModuleCard } from "@/components/ModuleCard";
 import { StatsCard } from "@/components/StatsCard";
+import { HSNMasterForm } from "@/components/forms/HSNMasterForm";
+import { CurrencyForm } from "@/components/forms/CurrencyForm";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +25,16 @@ import {
 } from "lucide-react";
 
 const Index = () => {
+  const [activeForm, setActiveForm] = useState<string | null>(null);
+
+  const handleFormSelect = (formType: string) => {
+    setActiveForm(formType);
+  };
+
+  const handleCloseForm = () => {
+    setActiveForm(null);
+  };
+
   const modules = [
     {
       title: "Pending Performa Invoice",
@@ -126,6 +140,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader />
+      <Navbar onFormSelect={handleFormSelect} />
       
       <div className="flex">
         <Sidebar />
@@ -214,6 +229,14 @@ const Index = () => {
           </section>
         </main>
       </div>
+
+      {/* Modal Forms */}
+      {activeForm === "HSN Master" && (
+        <HSNMasterForm onClose={handleCloseForm} />
+      )}
+      {activeForm === "Currency" && (
+        <CurrencyForm onClose={handleCloseForm} />
+      )}
     </div>
   );
 };
