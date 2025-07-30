@@ -44,7 +44,7 @@ export const StatsCard = ({
 
   return (
     <Card className={cn(
-      "p-6 transition-all duration-300 hover:shadow-medium",
+      "p-6 transition-all duration-300 hover:shadow-medium cursor-default",
       variants[variant]
     )}>
       <div className="flex items-start justify-between">
