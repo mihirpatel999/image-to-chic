@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,9 @@ import {
   LogOut,
   Phone,
   Menu,
-  X
+  X,
+  Minus,
+  Plus
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -145,7 +148,7 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
 
   return (
     <Card className={cn(
-      "h-full bg-card border-r shadow-soft transition-all duration-300 ease-in-out",
+      "h-screen bg-card border-r shadow-soft transition-all duration-300 ease-in-out rounded-none",
       isCollapsed ? "w-16" : "w-80"
     )}>
       <div className="p-4 border-b border-border">
@@ -165,18 +168,24 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
             variant="ghost"
             size="sm"
             onClick={toggleCollapsed}
-            className="h-9 w-9 p-0 hover:bg-primary/10 transition-colors"
+            className={cn(
+              "h-10 w-10 p-0 rounded-lg transition-all duration-200",
+              "hover:bg-primary/20 hover:scale-105 active:scale-95",
+              "border-2 border-transparent hover:border-primary/30",
+              "relative overflow-hidden"
+            )}
           >
+            <div className="absolute inset-0 bg-gradient-primary opacity-0 hover:opacity-10 transition-opacity rounded-lg" />
             {isCollapsed ? (
-              <Menu className="h-5 w-5 text-primary" />
+              <Plus className="h-5 w-5 text-primary transition-transform duration-200" />
             ) : (
-              <X className="h-5 w-5 text-primary" />
+              <Minus className="h-5 w-5 text-primary transition-transform duration-200" />
             )}
           </Button>
         </div>
       </div>
 
-      <div className="p-3 space-y-1 max-h-[calc(100vh-120px)] overflow-y-auto custom-scrollbar">
+      <div className="p-3 space-y-1 h-[calc(100vh-100px)] overflow-y-auto custom-scrollbar">
         {menuItems.map((item) => {
           const isExpanded = expandedItems.includes(item.title);
           const Icon = item.icon;
