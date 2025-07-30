@@ -153,7 +153,13 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
     )}>
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between">
-          <div className={cn("flex items-center gap-3 transition-all duration-300", isCollapsed && "justify-center")}>
+          <div 
+            className={cn(
+              "flex items-center gap-3 transition-all duration-300 cursor-pointer hover:opacity-80", 
+              isCollapsed && "justify-center"
+            )}
+            onClick={toggleCollapsed}
+          >
             <div className="p-2 bg-gradient-primary rounded-lg shadow-md">
               <Factory className="h-6 w-6 text-white" />
             </div>
