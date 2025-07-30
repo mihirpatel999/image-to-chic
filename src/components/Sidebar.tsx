@@ -145,17 +145,17 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
 
   return (
     <Card className={cn(
-      "h-full bg-card border-r shadow-soft transition-all duration-300",
+      "h-full bg-card border-r shadow-soft transition-all duration-300 ease-in-out",
       isCollapsed ? "w-16" : "w-80"
     )}>
-      <div className="p-6 border-b border-border">
+      <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between">
-          <div className={cn("flex items-center gap-3", isCollapsed && "justify-center")}>
-            <div className="p-2 bg-gradient-primary rounded-lg">
+          <div className={cn("flex items-center gap-3 transition-all duration-300", isCollapsed && "justify-center")}>
+            <div className="p-2 bg-gradient-primary rounded-lg shadow-md">
               <Factory className="h-6 w-6 text-white" />
             </div>
             {!isCollapsed && (
-              <div>
+              <div className="animate-fade-in">
                 <h2 className="font-bold text-xl text-foreground">SBS India</h2>
                 <p className="text-sm text-muted-foreground">Business Management</p>
               </div>
@@ -165,14 +165,18 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
             variant="ghost"
             size="sm"
             onClick={toggleCollapsed}
-            className="h-8 w-8 p-0"
+            className="h-9 w-9 p-0 hover:bg-primary/10 transition-colors"
           >
-            {isCollapsed ? <Menu className="h-4 w-4" /> : <X className="h-4 w-4" />}
+            {isCollapsed ? (
+              <Menu className="h-5 w-5 text-primary" />
+            ) : (
+              <X className="h-5 w-5 text-primary" />
+            )}
           </Button>
         </div>
       </div>
 
-      <div className="p-4 space-y-2 max-h-[calc(100vh-120px)] overflow-y-auto">
+      <div className="p-3 space-y-1 max-h-[calc(100vh-120px)] overflow-y-auto custom-scrollbar">
         {menuItems.map((item) => {
           const isExpanded = expandedItems.includes(item.title);
           const Icon = item.icon;
@@ -182,10 +186,10 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
               <Button
                 variant="ghost"
                 className={cn(
-                  "w-full h-12 px-4 text-left transition-all duration-200",
-                  "hover:bg-primary/10 hover:text-primary",
-                  isExpanded && "bg-primary/5 text-primary",
-                  isCollapsed ? "justify-center" : "justify-start"
+                  "w-full h-11 px-3 text-left transition-all duration-200 rounded-lg",
+                  "hover:bg-primary/10 hover:text-primary hover:shadow-sm",
+                  isExpanded && "bg-primary/5 text-primary shadow-sm",
+                  isCollapsed ? "justify-center px-2" : "justify-start"
                 )}
                 onClick={() => item.subItems ? toggleExpanded(item.title) : undefined}
               >
@@ -210,13 +214,13 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
               </Button>
               
               {!isCollapsed && isExpanded && item.subItems && (
-                <div className="ml-6 space-y-1 animate-slide-up">
+                <div className="ml-6 space-y-1 animate-fade-in">
                   {item.subItems.map((subItem) => (
                     <Button
                       key={subItem.title}
                       variant="ghost"
                       size="sm"
-                      className="w-full justify-start h-9 px-4 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                      className="w-full justify-start h-9 px-4 text-sm text-muted-foreground hover:text-foreground hover:bg-primary/5 transition-all duration-200 rounded-md group"
                       onClick={() => {
                         if (subItem.title === "HSN Master" || subItem.title === "Currency" || 
                             subItem.title === "Company Profile" || subItem.title === "Company Profile Register") {
@@ -224,7 +228,7 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
                         }
                       }}
                     >
-                      <div className="w-2 h-2 rounded-full bg-muted-foreground/30 mr-3 flex-shrink-0" />
+                      <div className="w-2 h-2 rounded-full bg-primary/40 mr-3 flex-shrink-0 group-hover:bg-primary transition-colors" />
                       {subItem.title}
                     </Button>
                   ))}
