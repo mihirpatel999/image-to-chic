@@ -238,7 +238,9 @@ export const Sidebar = ({ onFormSelect }: SidebarProps) => {
                       className="w-full justify-start h-9 px-4 text-sm text-muted-foreground hover:text-foreground hover:bg-primary/5 transition-all duration-200 rounded-md group"
                       onClick={() => {
                         if (subItem.title === "HSN Master" || subItem.title === "Currency" || 
-                            subItem.title === "Company Profile" || subItem.title === "Company Profile Register") {
+                            subItem.title === "Company Profile" || subItem.title === "Company Profile Register" ||
+                            subItem.title === "Country" || subItem.title === "Exchange Rate" || 
+                            subItem.title === "EPCG License") {
                           onFormSelect(subItem.title);
                         }
                       }}

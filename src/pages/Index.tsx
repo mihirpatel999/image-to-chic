@@ -6,6 +6,9 @@ import { StatsCard } from "@/components/StatsCard";
 import { HSNMasterForm } from "@/components/forms/HSNMasterForm";
 import { CurrencyForm } from "@/components/forms/CurrencyForm";
 import { CompanyProfileForm } from "@/components/forms/CompanyProfileForm";
+import { CountryForm } from "@/components/forms/CountryForm";
+import { ExchangeRateForm } from "@/components/forms/ExchangeRateForm";
+import { EPCGLicenseForm } from "@/components/forms/EPCGLicenseForm";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -235,6 +238,15 @@ const Index = () => {
       )}
       {activeForm === "Currency" && (
         <CurrencyForm onClose={handleCloseForm} />
+      )}
+      {activeForm === "Country" && (
+        <CountryForm onClose={handleCloseForm} />
+      )}
+      {activeForm === "Exchange Rate" && (
+        <ExchangeRateForm onClose={handleCloseForm} />
+      )}
+      {activeForm === "EPCG License" && (
+        <EPCGLicenseForm onClose={handleCloseForm} />
       )}
       {(activeForm === "Company Profile" || activeForm === "Company Profile Register") && (
         <CompanyProfileForm onClose={handleCloseForm} />
